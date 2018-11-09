@@ -5,6 +5,7 @@
 #include <time.h>
 #include <conio.h>
 #include <string.h>
+#include "helpers.c"
 
 #define BUFFER_SIZE 250
 
@@ -14,14 +15,13 @@ char mensagem[BUFFER_SIZE];
 char resposta[BUFFER_SIZE];
 int controlePessoas = 0;
 
-struct person {
+typedef struct {
 	char convidado[0];
 	char nome[100];
 	char prof[0];
 	char email[100];
 	char defic[0];
-};
-typedef struct person pessoa;
+} pessoa;
 
 void registra_winsock() { // Inicializa o uso da DLL Winsock
 	WSADATA wsadata;
@@ -65,80 +65,67 @@ void transmite() {
 	fecha_conexao();
 }
 
-void pause (float delay1) {
-   if (delay1 < 0.001) return; // pode ser ajustado e/ou evita-se valores negativos.
-   float inst1 = 0, inst2 = 0;
-   inst1 = (float) clock() / (float) CLOCKS_PER_SEC;
-   while (inst2 - inst1 < delay1) inst2 = (float) clock() / (float) CLOCKS_PER_SEC;
-   return;
-}
-
 void registrarPessoa();
 void pegarAcento(pessoa p){
 	transmite();
-	printf("\n%s\n", resposta);
+	system("cls");
+	char **infos = split(resposta, '/');
+	printf("\n\t\t__________________________________________");
+	printf("\n\t\t|                                        |");
+	printf("\n\t\t|        TICKET %s EMITIDO            |", infos[2]);
+	printf("\n\t\t|                                        |");
+	printf("\n\t\t|                                        |");
+	printf("\n\t\t|  EMITIDO PARA: %s.", infos[0]);
+	int lenght = strlen(infos[0]) + 17;
+	for(lenght; lenght < 40; lenght++) printf(" "); printf("|");
+	printf("\n\t\t|  ACENTO: %s.                          |", infos[1]);
+	printf("\n\t\t|  DATA: %s", infos[3]);
+	printf("\t\t|                                        |");
+	printf("\n\t\t|________________________________________|");
 	pause(4);
 	registrarPessoa();
 }
 
 void registrarPessoa() {
+	// consultaAcentos();
 	pessoa p;
 	strcpy(mensagem, "REGISTRA ");
 	system("cls");
 	printf("\n\t\tPALETRA DE DIREITOS HUMANOS UNIP!\n\n");
-	printf("\n\tEmitir Ticket de Entrada\n");
-	printf("\n\tNome Completo: ");
+	printf("\n\tEMITIR TICKET DE ENTRADA\n");
+	printf("\n\tNOME COMPLETO: ");
 	gets(p.nome);
 	strcat(mensagem, p.nome);
-	strcat(mensagem, "-");
-	printf("\tEmail: ");
+	strcat(mensagem, "/");
+	printf("\tEMAIL: ");
 	gets(p.email);
 	strcat(mensagem, p.email);
-	strcat(mensagem, "-");
-	printf("\tProfessor ? (S / N): ");
+	strcat(mensagem, "/");
+	printf("\tPROFESSOR ? (S / N): ");
 	gets(p.prof);
 	strcat(mensagem, p.prof);
-	strcat(mensagem, "-");
-	printf("\tConvidado ? (S / N): ");
+	strcat(mensagem, "/");
+	printf("\tCONVIDADO ? (S / N): ");
 	gets(p.convidado);
 	strcat(mensagem, p.convidado);
-	strcat(mensagem, "-");
-	printf("\tPossui Algum tipo de Deficiencia ? (S / N): ");
+	strcat(mensagem, "/");
+	printf("\tPOSSUI ALGUM TIPO DE DEFICIENCIA ? (S / N): ");
 	gets(p.defic);
 	strcat(mensagem, p.defic);
-	printf("\n\tGerando Ticket..."); pause(1);
-	printf("\n\tObtendo Cadeira..."); pause(0.5);
+	printf("\n\tGERANDO TICKET..."); pause(1);
+	printf("\n\tOBTENDO CADEIRA..."); pause(0.5);
 	printf("\n\n%s", mensagem);
 	pegarAcento(p);
-	getch();
 }
 
-void opc_par_ou_impar() {
-	int numero;
-	char numerostr[10];
-	printf("Numero: ");
-	scanf("%i", &numero);
-	itoa(numero, numerostr, 10); // 10 = Base 10
-	strcpy(mensagem, "PAR-OU-IMPAR ");
-	strcpy(&mensagem[13], numerostr);
+void consultaAcentos(){
+	strcpy(mensagem, "CONSULTA-ACENTOS");
 	transmite();
-	printf("%s\n", resposta);
-}
-
-void opc_dobro() {
-	int numero;
-	char numerostr[10];
-	printf("Numero: ");
-	scanf("%i", &numero);
-	itoa(numero, numerostr, 10); // 10 = Base 10
-	strcpy(mensagem, "DOBRO ");
-	strcpy(&mensagem[6], numerostr);
-	transmite();
-	printf("%s\n", resposta);
 }
 
 int main(int argc, char *argv[]) {
 	registra_winsock();
+	// consultaAcentos(); // RETORNA BOOL 
 	registrarPessoa();
 }
 
