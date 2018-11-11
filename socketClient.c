@@ -83,7 +83,6 @@ void pegarAcento(pessoa p){
 	printf("\t\t|                                        |");
 	printf("\n\t\t|________________________________________|");
 	pause(4);
-	registrarPessoa();
 }
 
 void registrarPessoa() {
@@ -118,14 +117,17 @@ void registrarPessoa() {
 	pegarAcento(p);
 }
 
-void consultaAcentos(){
+void consultaAcentos(bool *acentos){
 	strcpy(mensagem, "CONSULTA-ACENTOS");
 	transmite();
 }
 
 int main(int argc, char *argv[]) {
 	registra_winsock();
-	// consultaAcentos(); // RETORNA BOOL 
-	registrarPessoa();
+	bool acentos = true;
+	while(acentos){
+		//consultaAcentos(&acentos); // RETORNA BOOL 
+		registrarPessoa();
+	}
 }
 
