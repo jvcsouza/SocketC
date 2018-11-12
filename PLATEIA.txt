@@ -1,6 +1,13 @@
 	***********************************
 	*                                 *
 	*    EXPECTADORES PALETRA UNIP    *
-	*    Sat Nov 10 15:29:20 2018     *
+	*    Mon Nov 12 13:02:10 2018     *
 	*                                 *
 	***********************************
+
+-------------------------
+ENTRADA: Mon Nov 12 13:02:31 2018
+NOME: CARLOS MAGNO
+ACENTO: 93
+EMAIL: CARLOSMAGNO@LIVE.COMS
+TICKET: #7468

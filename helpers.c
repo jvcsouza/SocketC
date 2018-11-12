@@ -1,3 +1,5 @@
+#include <time.h>
+
 void pause (float delay1) {
    if (delay1 < 0.001) return;
    float inst1 = 0, inst2 = 0;

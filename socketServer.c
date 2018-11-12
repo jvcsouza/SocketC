@@ -8,19 +8,15 @@
 #include <windows.h>
 #include <string.h>
 #include "helpers.c"
-// #include <iostream>
 
 #define BUFFER_SIZE 300
 #define DEBUG
 #define ARQUIVO "PLATEIA.txt"
-// using namespace std;
 SOCKET escuta, conexao;
 struct sockaddr_in server_address;
 struct sockaddr_in client_address;
 char mensagem[BUFFER_SIZE];
 char resposta[BUFFER_SIZE];
-// HANDLE thread[0];
-// DWORD dwThreadID;
 int limitePessoas;
 bool salvarTxt;
 int controleEntrada = 0, 
@@ -108,21 +104,6 @@ void montarResposta(person p){
 	plateia[p.cadeira - 1] = p;
 }
 
-// void * salvarEmArquivo(void * param){
-// 	std::thread(salvarEmArquivo);
-// 	return 0;
-// }
-// void * salvarEmArquivo (void * param);
-// void criarThread(person p){
-// 	thread[0] = CreateThread(NULL,
-// 		0,
-// 		salvarEmArquivo,
-// 		p,
-// 		0,
-// 		&dwThreadID);
-// 	sleep(0);
-// }
-
 void salvarEmArquivo(person p){
 	arqv = fopen(ARQUIVO, "a");
 	fprintf(arqv, "\n%s\n", "-------------------------");
@@ -162,10 +143,10 @@ void criarArquivo(){
 
 void inicializarStruct();
 void registrarEntrada(person p){
-	if(auxStruct){ 
-		for(i = 0; i <= lotacao; i++) plateia[i].cadeira = (int) 0;
-		auxStruct = false; 
-	}
+	// if(auxStruct){ 
+	// 	for(i = 0; i <= lotacao; i++) plateia[i].cadeira = (int) 0;
+	// 	auxStruct = false; 
+	// }
 	if(limitePessoas > 0){
 		if(!strcmp(p.convidado, "S") || !strcmp(p.prof, "S")){
 			for(i = 0; i < reservadoProfConv; i++){
@@ -181,8 +162,8 @@ void registrarEntrada(person p){
 				reservadoDef++;
 			}
 		}else{
-			for(i = 0; i < lotacao; i++) printf("%i\n", plateia[i].cadeira);
-			getch();
+			// for(i = 0; i < lotacao; i++) printf("%i\n", plateia[i].cadeira);
+			// getch();
 			if(plateia[controleEntrada].cadeira == 0 && controleEntrada < lotacao){
 				p.cadeira = controleEntrada + 1;
 				controleEntrada++;
