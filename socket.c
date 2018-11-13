@@ -1,4 +1,6 @@
 #include <winsock2.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define BUFFER_SIZE 300
 SOCKET conexao;
@@ -48,8 +50,8 @@ void transmite() {
 	fecha_conexao();
 }
 
-void setMsg(char * msg){
-    strcpy(mensagem, msg);
+void setMsg(char mensagem[]){
+    strcpy(mensagem, mensagem);
     transmite();
 }
 char * getResposta(){

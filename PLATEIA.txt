@@ -1,13 +1,14 @@
 	***********************************
 	*                                 *
-	*    EXPECTADORES PALETRA UNIP    *
-	*    Mon Nov 12 13:02:10 2018     *
+	*    EXPECTADORES PALESTRA UNIP    *
+	*    Tue Nov 13 15:16:29 2018     *
 	*                                 *
 	***********************************
 
 -------------------------
-ENTRADA: Mon Nov 12 13:02:31 2018
-NOME: CARLOS MAGNO
-ACENTO: 93
-EMAIL: CARLOSMAGNO@LIVE.COMS
-TICKET: #7468
+ENTRADA: Tue Nov 13 15:17:14 2018
+NOME: JOAO V C SOUZA
+ACENTO: 7
+EMAIL: JV@LIVE.COM
+TICKET: #14283
+** ACENTO PREFERENCIAL **

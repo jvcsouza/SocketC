@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <winsock2.h>
 #include <stdbool.h>
@@ -25,6 +25,7 @@ reservadoDef = 0, i, lotacao;
 FILE *arqv;
 char *nomeArqv;
 bool auxStruct = true;
+int reservDef = 0;
 
 typedef struct {
 	int cadeira;
@@ -97,10 +98,10 @@ void montarResposta(person p){
 	strcat(resposta, p.ticket);
 	strcat(resposta, "/");
 	strcat(resposta, p.data);
-	printf("\t_______________________________\n");
-	printf("\n\t%s\t%s ENTROU!\n\tTICKET: %s!\n\tCADEIRA %i!\n",
+	printf("_______________________________\n");
+	printf("\n\t%s\t%s ENTROU!\n\tTICKET: %s!\n\tCADEIRA %i!\n\t",
 		p.data, p.nome, p.ticket, p.cadeira);
-	printf("\t_______________________________\n\t");
+	// printf("\t_______________________________\n\t");
 	plateia[p.cadeira - 1] = p;
 }
 
@@ -134,7 +135,7 @@ void criarArquivo(){
 	arqv = fopen(ARQUIVO, "w");
 	fprintf(arqv, "\t***********************************");
 	fprintf(arqv, "\n\t*                                 *");
-	fprintf(arqv, "\n\t*    EXPECTADORES PALETRA UNIP    *");
+	fprintf(arqv, "\n\t*    EXPECTADORES PALESTRA UNIP   *");
 	fprintf(arqv, "\n\t*    %s     *\n", a);
 	fprintf(arqv, "\t*                                 *\n");
 	fprintf(arqv, "\t***********************************\n");
@@ -160,6 +161,7 @@ void registrarEntrada(person p){
 			if(plateia[reservadoDef].cadeira == 0){
 				p.cadeira = reservadoDef + 1;
 				reservadoDef++;
+				reservDef--;
 			}
 		}else{
 			// for(i = 0; i < lotacao; i++) printf("%i\n", plateia[i].cadeira);
@@ -191,9 +193,19 @@ void separaDados(char * string){
 }
 
 int consultaAcentos(){
-	char acentos[6];
-	itoa(controleEntrada, acentos, 10);
-	strcpy(resposta, acentos);
+	char aux[6];
+	int acentos = 0;
+	for(i = 0; i < lotacao; i++)
+		if(plateia[i].cadeira == 0)
+			acentos++;
+	itoa(acentos - (reservadoProfConv + reservDef), aux, 10);
+	strcpy(resposta, aux);
+	strcat(resposta, "/");
+	itoa(reservadoProfConv, aux, 10);
+	strcat(resposta, aux);
+	strcat(resposta, "/");
+	itoa(reservDef, aux, 10);
+	strcat(resposta, aux);
 }
 
 void processa() {
@@ -217,9 +229,12 @@ void fecha_conexao() {
 	closesocket(conexao);
 }
 void inicializarStruct(int limite){
-	person pessoas[limite];
-	plateia = pessoas;
+	person **pe = (person**)malloc(limite * sizeof(person));
 	for(i = 0; i <= limite; i++)
+		*(pe + i) = (person*)malloc(40*sizeof(person));
+	plateia = *pe;
+	// free(pe);
+	for(i -= 1; i >= 0; i--)
 		plateia[i].cadeira = 0;
 }
 
@@ -229,6 +244,7 @@ void configurarServidor(){
 	printf("\n\tCAPACIDADE DO LOCAL: ");
 	scanf("%i", &limitePessoas);
 	reservadoDef = (limitePessoas * 0.05);
+	reservDef = reservadoDef;
 	reservadoProfConv = ((limitePessoas - reservadoDef) * 0.25);
 	controleEntrada = limitePessoas - reservadoProfConv;
 	inicializarStruct(limitePessoas);
@@ -237,7 +253,7 @@ void configurarServidor(){
 	printf("\tPROFESSORES/CONVIDADOS: %i.\n", reservadoProfConv);
 	printf("\tDEMAIS EXPECTADORES: %i.\n\n", controleEntrada - reservadoDef);
 	printf("\tSALVAR TICKETS EM ARQUIVO DE TEXTO (S / N) : ");
-	scanf("%s", &aux[0]);
+	scanf("%s", &aux);
 	if(!strcmp(strupr(aux), "S")) criarArquivo();
 	printf("\n\tINICIANDO SERVIDOR...");
 	pause(2);
