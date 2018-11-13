@@ -99,7 +99,7 @@ void montarResposta(person p){
 	strcat(resposta, "/");
 	strcat(resposta, p.data);
 	printf("_______________________________\n");
-	printf("\n\t%s\t%s ENTROU!\n\tTICKET: %s!\n\tCADEIRA %i!\n\t",
+	printf("\n\t%s\t%s ENTROU!\n\tTICKET: %s!\n\tCADEIRA %i!\n\t\t",
 		p.data, p.nome, p.ticket, p.cadeira);
 	// printf("\t_______________________________\n\t");
 	plateia[p.cadeira - 1] = p;
@@ -144,10 +144,6 @@ void criarArquivo(){
 
 void inicializarStruct();
 void registrarEntrada(person p){
-	// if(auxStruct){ 
-	// 	for(i = 0; i <= lotacao; i++) plateia[i].cadeira = (int) 0;
-	// 	auxStruct = false; 
-	// }
 	if(limitePessoas > 0){
 		if(!strcmp(p.convidado, "S") || !strcmp(p.prof, "S")){
 			for(i = 0; i < reservadoProfConv; i++){
@@ -164,8 +160,6 @@ void registrarEntrada(person p){
 				reservDef--;
 			}
 		}else{
-			// for(i = 0; i < lotacao; i++) printf("%i\n", plateia[i].cadeira);
-			// getch();
 			if(plateia[controleEntrada].cadeira == 0 && controleEntrada < lotacao){
 				p.cadeira = controleEntrada + 1;
 				controleEntrada++;

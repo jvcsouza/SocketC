@@ -39,7 +39,7 @@ void abrirTxt(){
 void mostrarOps(){
     char op[3];
     system("cls");
-    printf("\n\t\t%s\n", "ADMINISTRACAO DO SERVIDOR");
+    printf("\n\n\t\t%s\n", "ADMINISTRACAO DO SERVIDOR");
     printf("\n\n\t1) %s", "CONSULTAR ACENTOS DISPONIVEIS.");
     printf("\n\t2) %s", "ABRIR RELACAO DE ENTRADAS");
     printf("\n\t3) %s", "FINALIZAR PALESTRA E REALIZAR SORTEIO.");

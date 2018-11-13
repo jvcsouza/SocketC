@@ -14,6 +14,8 @@ SOCKET conexao;
 struct sockaddr_in server_address;
 char mensagem[BUFFER_SIZE];
 int controlePessoas = 0;
+char **dados;
+int acntsGeral, acntsProf, acntsDef;
 
 typedef struct {
 	char convidado[0];
@@ -42,8 +44,11 @@ void pegarAcento(pessoa p){
 	pause(4);
 }
 
+void exibirErro(char msg[]){
+	printf("\n\tVagas para %s Esgotadas.\n\tTe encaminhamos para um acento não-preferencial\n", msg);
+}
+
 void registrarPessoa() {
-	// consultaAcentos();
 	pessoa p;
 	strcpy(mensagem, "REGISTRA ");
 	system("cls");
@@ -59,14 +64,23 @@ void registrarPessoa() {
 	strcat(mensagem, "/");
 	printf("\tPROFESSOR ? (S / N): ");
 	gets(p.prof);
+	if(!strcmp(strupr(p.prof), "S") && acntsProf <= 0)
+		if(acntsGeral > 0) strcpy(p.prof, "N");
+		else exibirErro("PROFESSORES");
 	strcat(mensagem, p.prof);
 	strcat(mensagem, "/");
 	printf("\tCONVIDADO ? (S / N): ");
 	gets(p.convidado);
+	if(!strcmp(strupr(p.convidado), "S") && acntsProf <= 0)
+		if(acntsGeral > 0) strcpy(p.convidado, "N");
+		else exibirErro("CONVIDADOS");
 	strcat(mensagem, p.convidado);
 	strcat(mensagem, "/");
 	printf("\tPOSSUI ALGUM TIPO DE DEFICIENCIA ? (S / N): ");
 	gets(p.defic);
+	if(!strcmp(strupr(p.defic), "S") && acntsDef <= 0)
+		if(acntsGeral > 0) strcpy(p.defic, "N");
+		else exibirErro("DEFICIENTES");
 	strcat(mensagem, p.defic);
 	printf("\n\tGERANDO TICKET..."); pause(1);
 	printf("\n\tOBTENDO CADEIRA..."); pause(0.5);
@@ -75,17 +89,31 @@ void registrarPessoa() {
 	pegarAcento(p);
 }
 
-void consultaAcentos(bool *acentos){
-	strcpy(mensagem, "CONSULTA-ACENTOS");
-	// transmite();
+int consultaAcentos(){
+	strcpy(mensagem, "CONSULTA-ACENTOS ");
+	setMsg(mensagem);
+	dados = split(getResposta(), '/');
+	acntsGeral = atoi(dados[0]);
+	acntsProf = atoi(dados[1]);
+	acntsDef = atoi(dados[2]);
+	return (acntsDef + acntsProf + acntsGeral);
 }
 
 int main(int argc, char *argv[]) {
 	registra_winsock();
-	bool acentos = true;
+	int acentos = consultaAcentos();
 	while(acentos){
-		//consultaAcentos(&acentos); // RETORNA BOOL 
 		registrarPessoa();
+		acentos--;
 	}
+	system("cls");
+	printf("\n\n\n\t************************************\n");
+	printf("\t************************************\n");
+	printf("\t*********                  *********\n");
+	printf("\t**********  TEATRO CHEIO  **********\n");
+	printf("\t*********                  *********\n");
+	printf("\t************************************\n");
+	printf("\t************************************\n");
+	getch();
 }
 
