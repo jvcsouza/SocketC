@@ -24,7 +24,6 @@ reservadoProfConv = 0,
 reservadoDef = 0, i, lotacao;
 FILE *arqv;
 char *nomeArqv;
-bool auxStruct = true;
 int reservDef = 0;
 
 typedef struct {
@@ -39,6 +38,8 @@ typedef struct {
 } person;
 
 person *plateia;
+person sorteio[BUFFER_SIZE];
+int auxSorteio = 0;
 
 void registra_winsock() { // Inicializa o uso da DLL Winsock
 	WSADATA wsadata;
@@ -98,11 +99,12 @@ void montarResposta(person p){
 	strcat(resposta, p.ticket);
 	strcat(resposta, "/");
 	strcat(resposta, p.data);
-	printf("_______________________________\n");
+	printf("\t_______________________________\n");
 	printf("\n\t%s\t%s ENTROU!\n\tTICKET: %s!\n\tCADEIRA %i!\n\t\t",
 		p.data, p.nome, p.ticket, p.cadeira);
-	// printf("\t_______________________________\n\t");
 	plateia[p.cadeira - 1] = p;
+	if(!strcmp(strupr(p.convidado), "N"))
+		sorteio[auxSorteio++] = p;
 }
 
 void salvarEmArquivo(person p){
@@ -202,6 +204,18 @@ int consultaAcentos(){
 	strcat(resposta, aux);
 }
 
+void sortearParticipante(){
+	srand(time(NULL));
+	person p = sorteio[rand() % auxSorteio];
+	strcpy(resposta, p.nome);
+	strcat(resposta, "/");
+	char cad[3];
+	itoa(p.cadeira, cad, 10);
+	strcat(resposta, cad);
+	strcat(resposta, "/");
+	strcat(resposta, p.ticket);
+}
+
 void processa() {
 	char comando[20];
 	int i;
@@ -213,7 +227,8 @@ void processa() {
 	}
 	if (!strcmp(comando, "REGISTRA")) separaDados(mensagem);
 	else if (!strcmp(comando, "CONSULTA-ACENTOS")) consultaAcentos();
-	else strcpy(resposta, "ERRO");
+	else if (!strcmp(comando, "SORTEAR")) sortearParticipante();
+	else strcpy(resposta, "ERRO/ -- / -- / -- /");
 }
 
 void envia_resposta() {
@@ -260,7 +275,7 @@ int main(int argc, char *argv[]) {
 	registra_winsock();
 	cria_socket_escuta();
 	printf("\n\t\tSERVIDOR EM FUNCIONAMENTO\n");
-	printf("\n\n\tLOGS DE ENTRADA: \n\n\t");
+	printf("\n\n\tLOGS DE ENTRADA: \n\n");
 	while (true) {
 		aguarda_conexao();
 		le_mensagem();

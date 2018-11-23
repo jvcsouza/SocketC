@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <locale.h>
 #include "socket.c"
 #include "helpers.c"
 
@@ -36,6 +37,24 @@ void abrirTxt(){
 	system(cmd);
 }
 
+void sortear(){
+    strcpy(mensagem, "SORTEAR ");
+    setMsg(mensagem);
+    char **dados = split(getResposta(), '/');
+    system("cls");
+    printf("\n\n\n\t\t\t****************************\n");
+          printf("\t\t\t*****                  *****\n");
+          printf("\t\t\t***     S O R T E I O    ***\n");
+          printf("\t\t\t*****                  *****\n");
+          printf("\t\t\t***         %s        ***\n", dados[2]);
+          printf("\t\t\t*****                  *****\n");
+          printf("\t\t\t****************************\n\n\t\t\t");
+          pause(2);
+          printf("NOME: %s.\n", dados[0]);
+          printf("\t\t\tACENTO: %s.", dados[1]);
+          pause(4);
+}
+
 void mostrarOps(){
     char op[3];
     system("cls");
@@ -48,12 +67,16 @@ void mostrarOps(){
     switch(op[0]){
         case '1': consultarAcentos(); break;
         case '2': abrirTxt(); break;
-        case '3': printf("Opcao 3"); break;
-        default: printf("Opcao Invalida!");
+        case '3': sortear(); break;
+        default: 
+            printf("\n\tOpcao Invalida!");
+            pause(1.5);
+            break;
     }
 }
 
 int main(){
+    setlocale(LC_ALL, "");
     registra_winsock();
     while(true)
         mostrarOps();
