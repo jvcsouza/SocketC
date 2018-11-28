@@ -79,6 +79,8 @@ void le_mensagem() {
 	recv(conexao, mensagem, BUFFER_SIZE, 0);
 }
 
+// Gera um numero aletorio de 4 a 5 digitos
+// baseando-se nos milissengundos
 char * gerarTicket(){
 	srand(time(NULL));
 	int numero = rand() * 2 / 4;
@@ -121,12 +123,13 @@ void salvarEmArquivo(person p){
 	fclose(arqv);
 }
 
+// Função que retorna data e hora
 char * getData(){
 	time_t t;
 	time(&t);
 	struct tm *data;
 	data = localtime(&t);
-	return asctime(data);
+	return asctime(data); // retorna uma string com '\n'
 }
 
 void criarArquivo(){
@@ -144,7 +147,9 @@ void criarArquivo(){
 	fclose(arqv);
 }
 
-void inicializarStruct();
+// Registra a entrada da pessoa
+// e a coloca na cadeira respectiva
+// conforme as informações recebidas
 void registrarEntrada(person p){
 	if(limitePessoas > 0){
 		if(!strcmp(p.convidado, "S") || !strcmp(p.prof, "S")){
@@ -176,6 +181,9 @@ void registrarEntrada(person p){
 	}else strcpy(resposta, "LOTACAO ATINGINDA!");
 }
 
+// Lê a mensagem recebida e separa
+// dados referente a pessoa que será cadastrada
+// salvando-os em maiusculo no struct
 void separaDados(char * string){
 	person p;
 	strcpy(string, &mensagem[9]);
@@ -204,6 +212,8 @@ int consultaAcentos(){
 	strcat(resposta, aux);
 }
 
+// Responsavel por pegar um registro
+// aleatorio dentro do struct 'plateia'
 void sortearParticipante(){
 	srand(time(NULL));
 	person p = sorteio[rand() % auxSorteio];
@@ -216,6 +226,8 @@ void sortearParticipante(){
 	strcat(resposta, p.ticket);
 }
 
+// Lê a string recebida do client, interpreta
+// o comando e envia para a função solicitada
 void processa() {
 	char comando[20];
 	int i;
@@ -237,16 +249,21 @@ void envia_resposta() {
 void fecha_conexao() {
 	closesocket(conexao);
 }
+
+// Função responsavel por alocar o vetor
+// de struct 'person' conforme a capacidade digitada
 void inicializarStruct(int limite){
 	person **pe = (person**)malloc(limite * sizeof(person));
 	for(i = 0; i <= limite; i++)
-		*(pe + i) = (person*)malloc(40*sizeof(person));
+		*(pe + i) = (person*)malloc(limite*sizeof(person));
 	plateia = *pe;
-	// free(pe);
 	for(i -= 1; i >= 0; i--)
 		plateia[i].cadeira = 0;
 }
 
+// Função responsavel por definir as configurações
+// inicias do servidor e separa os acentos diponiveis
+// entre convidados, professores e deficientes
 void configurarServidor(){
 	char aux[0];
 	printf("\n\t\tCONFIGURACAO INICIAL DO SERVIDOR!\n");

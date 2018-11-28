@@ -1,5 +1,7 @@
 #include <time.h>
 
+// Pausa a aplicação pelo tempo em segundos
+// informado na chamada do metodo 
 void pause (float seg) {
    if (seg < 0.001) return;
    float inst1 = 0, inst2 = 0;
@@ -8,6 +10,9 @@ void pause (float seg) {
    return;
 }
 
+// Recebe uma string e um separador
+// retorna um vetor de string com as partes
+// dividas pelo separador informado
 char **split(char frase[], char separador){
     int i, j, k, contsep = 0;
     for(i = 0, contsep = 0; i < strlen(frase); i++)
@@ -31,7 +36,6 @@ char **split(char frase[], char separador){
         for(i=0;i<=contsep;i++)
         	*(result+i) = strcpy(*(result+i), aux[i]);
 	   	return result;
-    }else
-        printf("Nenhum Separador Encontrado");
+    }
 }
 

@@ -55,6 +55,8 @@ void sortear(){
           pause(4);
 }
 
+// Responsavel interpretar o codigo
+// digitado e encaminhar para função solicitada
 void mostrarOps(){
     char op[3];
     system("cls");

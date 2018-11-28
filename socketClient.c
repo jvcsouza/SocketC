@@ -89,6 +89,8 @@ void registrarPessoa() {
 	pegarAcento(p);
 }
 
+// Consulta os acentos disponiveis
+// para cada categoria a cada cadastro realizado
 int consultaAcentos(){
 	strcpy(mensagem, "CONSULTA-ACENTOS ");
 	setMsg(mensagem);
@@ -99,12 +101,15 @@ int consultaAcentos(){
 	return (acntsDef + acntsProf + acntsGeral);
 }
 
+// No inicio da aplicação a mesma faz uma
+// verificação de acentos disponiveis no servidor
 int main(int argc, char *argv[]) {
 	registra_winsock();
 	int acentos = consultaAcentos();
 	while(acentos){
 		registrarPessoa();
 		acentos--;
+		acentos = consultaAcentos();
 	}
 	system("cls");
 	printf("\n\n\n\t************************************\n");
