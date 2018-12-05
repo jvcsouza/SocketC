@@ -254,8 +254,9 @@ void fecha_conexao() {
 // de struct 'person' conforme a capacidade digitada
 void inicializarStruct(int limite){
 	person **pe = (person**)malloc(limite * sizeof(person));
+	int lim = limite > 300 ? limite : 300;
 	for(i = 0; i <= limite; i++)
-		*(pe + i) = (person*)malloc(limite*sizeof(person));
+		*(pe + i) = (person*)malloc(lim*sizeof(person));
 	plateia = *pe;
 	for(i -= 1; i >= 0; i--)
 		plateia[i].cadeira = 0;
